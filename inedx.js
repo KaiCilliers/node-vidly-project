@@ -19,7 +19,7 @@ var myGenres = [
 ];
 
 // Middleware
-//app.use(express.json());
+app.use(express.json());
 
 // GET
 app.get('/genres', (req, res) => {
