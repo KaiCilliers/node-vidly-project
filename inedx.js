@@ -6,18 +6,39 @@ const Joi = require('@hapi/joi');
 const app = express();
 
 // Middleware
+// you need this to be able to return json objects
+app.use(express.json());
+
+// Data
+var myGenres = [
+    { id: 1, genre: 'romance' },
+    { id: 2, genre: 'adventure' },
+    { id: 3, genre: 'comedy' },
+    { id: 4, genre: 'anime' },
+    { id: 5, genre: 'drama' }
+];
+
+// Middleware
 //app.use(express.json());
 
 // GET
-app.get('/', (req, res) => {
-    console.log('get req');
-    res.send('get req');
+app.get('/genres', (req, res) => {
+    res.send(myGenres);
 });
 
 // POST
-app.post('/', (req, res) => {
-    console.log('post req');
-    res.send('post req');
+app.post('/genres', (req, res) => {
+    const { error } = validateGenre(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
+
+    const genre = {
+        id: myGenres.length + 1,
+        genre: req.body.genre
+    };
+    myGenres.push(genre);
+
+    res.send(genre);
+
 });
 
 // PUT
@@ -33,6 +54,12 @@ app.delete('/', (req, res) => {
 });
 
 // Functions
+function validateGenre(genre) {
+    const schema = {
+        genre: Joi.string().min(4).required()
+    };
+    return Joi.validate(genre, schema);
+}
 
 // Listener
 const PORT = process.env.PORT || 3002;
