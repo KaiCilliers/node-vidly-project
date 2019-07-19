@@ -42,9 +42,16 @@ app.post('/genres', (req, res) => {
 });
 
 // PUT
-app.put('/', (req, res) => {
-    console.log('put req');
-    res.send('put req');
+app.put('/genres/:id', (req, res) => {
+    const genreObj = myGenres.find(item => item.id === parseInt(req.params.id));
+    if(!genreObj) return res.status(404).send('Genre with provided ID not found');
+
+    const { error } = validateGenre(req.body)
+    if(error) return res.status(400).send(error.details[0].message)
+
+    genreObj.genre = req.body.genre;
+
+    res.send(genreObj);
 });
 
 // DELETE
