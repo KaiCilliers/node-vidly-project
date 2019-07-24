@@ -1,14 +1,17 @@
 /**
  * Dependencies
  */
+const mongoose = require('mongoose');
 const express = require('express');
-const Joi = require('@hapi/joi');
 const router = require('./routes/genres');
 
 /**
- * Server
+ * Server and database connection
  */
 const app = express();
+mongoose.connect('mongodb://localhost/vidly')
+    .then(() => console.log('Connected to MongoDB...'))
+    .catch(err => console.error('Could not connect to MongoDB...'));
 
 /**
  * Middleware
