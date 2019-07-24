@@ -1,32 +1,11 @@
 /**
  * Dependencies
  */
-const Joi = require('@hapi/joi');
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
-
-/**
- * Model
- */
-const Customer = mongoose.model('Customer', new mongoose.Schema({
-    isGold: {
-        type: Boolean,
-        default: false
-    },
-    name: {
-        type: String,
-        required: true,
-        minlength: 4,
-        maxlength: 50
-    },
-    phone: {
-        type: String,
-        required: true,
-        minlength: 5,
-        maxlength: 50
-    }
-}))
+// const customer = require('../models/customer'); // not preferred
+const {Customer, joiValidate} = require('../models/customer'); // no need for customer.validate or customer.Customer
 
 /**
  * GET
@@ -84,18 +63,6 @@ router.delete('/:id', async (req, res) => {
     if (!customer) return res.status(404).send('Customer with provided ID not found');
     res.send(customer);
 });
-
-/**
- * Functions
- */
-function joiValidate(customer) {
-    const schema = {
-        isGold: Joi.boolean(), // not required because there is a default value assigned
-        name: Joi.string().min(4).max(50).required(),
-        phone: Joi.string().min(5).max(50).required()
-    };
-    return Joi.validate(customer, schema);
-}
 
 /**
  * Exports

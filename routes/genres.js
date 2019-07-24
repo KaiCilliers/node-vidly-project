@@ -2,21 +2,9 @@
  * Dependencies
  */
 const express = require('express');
-const Joi = require('@hapi/joi');
 const router = express.Router();
 const mongoose = require('mongoose');
-
-/**
- * Models with Schemas
- */
-const Genre = mongoose.model('Genre', new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        minlength: 5,
-        maxlength: 50
-    }
-}));
+const {Genre, joiValidate} = require('../models/genre');
 
 /**
  * GET
@@ -37,7 +25,7 @@ router.get('/:id', async (req, res) => {
  * POST
  */
 router.post('/', async (req, res) => {
-    const { error } = validateGenre(req.body);
+    const { error } = joiValidate(req.body);
     if(error) return res.status(400).send(error.details[0].message);
 
     // Using let because when saving, the ID will be sent to us and we want to reset genre with the ID attribute
@@ -55,7 +43,7 @@ router.post('/', async (req, res) => {
  * PUT
  */
 router.put('/:id', async (req, res) => {
-    const { error } = validateGenre(req.body)
+    const { error } = joiValidate(req.body)
     if(error) return res.status(400).send(error.details[0].message)
 
     const genre = await Genre.findByIdAndUpdate(req.params.id, {
@@ -63,7 +51,7 @@ router.put('/:id', async (req, res) => {
     }, { new: true });
 
     if(!genre) return res.status(404).send('Genre with provided ID not found');
-    
+
     res.send(genre);
 });
 
@@ -77,16 +65,6 @@ router.delete('/:id', async (req, res) => {
 
     res.send(genre);
 });
-
-/**
- * Functions
- */
-function validateGenre(genre) {
-    const schema = {
-        name: Joi.string().min(4).required()
-    };
-    return Joi.validate(genre, schema);
-}
 
 /**
  * Exports
