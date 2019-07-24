@@ -63,7 +63,7 @@ router.put('/:id', async (req, res) => {
     }, { new: true });
 
     if(!genre) return res.status(404).send('Genre with provided ID not found');
-
+    
     res.send(genre);
 });
 
