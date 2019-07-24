@@ -3,7 +3,8 @@
  */
 const mongoose = require('mongoose');
 const express = require('express');
-const router = require('./routes/genres');
+const routerGenre = require('./routes/genres');
+const routerCustomer = require('./routes/customers');
 
 /**
  * Server and database connection
@@ -17,7 +18,8 @@ mongoose.connect('mongodb://localhost/vidly')
  * Middleware
  */
 app.use(express.json());
-app.use('/api/genres', router);
+app.use('/api/genres', routerGenre);
+app.use('/api/customers', routerCustomer);
 
 /**
  * Listener
