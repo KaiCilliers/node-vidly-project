@@ -7,14 +7,15 @@ const mongoose = require('mongoose');
 /**
  * Models with Schemas
  */
-const Genre = mongoose.model('Genre', new mongoose.Schema({
+const genreSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
         minlength: 5,
         maxlength: 50
     }
-}));
+});
+const Genre = mongoose.model('Genre', genreSchema);
 
 /**
  * Functions
@@ -29,5 +30,6 @@ function validateGenre(genre) {
 /**
  * Exports
  */
+module.exports.genreSchema = genreSchema;
 module.exports.Genre = Genre;
 module.exports.joiValidate = validateGenre;
