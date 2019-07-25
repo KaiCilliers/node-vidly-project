@@ -19,8 +19,12 @@ router.get('/:id', (req, res) => {
 /**
  * POST
  */
-router.post('/:id', (req, res) => {
-    res.send(req.params.id);
+router.post('/', (req, res) => {
+    let movie = new Movie({
+        title: req.body.title
+    });
+
+    res.send(movie);
 });
 
 /**

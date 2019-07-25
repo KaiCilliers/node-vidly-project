@@ -1,35 +1,35 @@
 /**
  * Dependencies
  */
+const Joi = require('@hapi/joi');
 const mongoose = require('mongoose');
+const {genreSchema} = require('./genre');
 
 /**
- * Schema and Model
+ * Models with Schemas
  */
-const genreSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    }
-});
-
 const Movie = mongoose.model('Movie', new mongoose.Schema({
     title: {
         type: String,
-        required: true
-    },
-    genre: genreSchema,
-    numberInStock: {
-        type: Number,
-        required: true
-    },
-    dailyRentalRate: {
-        type: Number,
-        required: true
+        required: true,
+        trim: true,
+        minlength: 5,
+        maxlength: 255
     }
 }));
+
+/**
+ * Functions
+ */
+function validateMovie(movie) {
+    const schema = {
+        title: Joi.string().min(4).required()
+    };
+    return Joi.validate(movie, schema);
+}
 
 /**
  * Exports
  */
 module.exports.Movie = Movie;
+// module.exports.joiValidate = validateGenre;
