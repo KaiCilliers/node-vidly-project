@@ -32,7 +32,17 @@ router.post('/', async (req, res) => {
     const genre = await Genre.findById(req.body.genreId);
     if (!genre) return res.status(400).send('Invalid genre.');
     
-    let movie = new Movie({ 
+    /**
+     * OK...so me made this a let initially, because we set
+     * the values of movie. We then wanted to save it and get
+     * the ID after it was saved to display to client.
+     * 
+     * ID is set via mongoose talking to mongoDB driver and
+     * not by mongoDB itself.
+     * 
+     * Hence, movie can be a constant
+     */
+    const movie = new Movie({ 
         title: req.body.title,
         genre: {
             _id: genre._id,
@@ -41,7 +51,7 @@ router.post('/', async (req, res) => {
         numberInStock: req.body.numberInStock,
         dailyRentalRate: req.body.dailyRentalRate
     });
-    movie = await movie.save();
+    await movie.save();
     res.send(movie);
 });
 

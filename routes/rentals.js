@@ -1,0 +1,79 @@
+/**
+ * Dependencies
+ */
+const {Rental, joiValidate} = require('../models/rental');
+const {Movie} = require('../models/movie');
+const {Customer} = require('../models/customer');
+const mongoose = require('mongoose');
+const Fawn = require('fawn');
+const express = require('express');
+const router = express.Router();
+
+// Inits
+Fawn.init(mongoose);
+
+/**
+ * GET
+ */
+router.get('/', async (req, res) => {
+    const rentals = await Rental.find().sort('-dateOut');
+    res.send(rentals);
+});
+
+/**
+ * POST
+ */
+router.post('/', async (req, res) => {
+    const { error } = joiValidate(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    const customer = await Customer.findById(req.body.customerId);
+    if (!customer) return res.status(400).send('Invalid customer.');
+
+    const movie = await Movie.findById(req.body.movieId);
+    if (!movie) return res.status(400).send('Invalid movie.');
+
+    if (movie.numberInStock === 0) return res.status(400).send('Movie not available.')
+
+    let rental = new Rental({
+        customer: {
+            _id: customer.id,
+            name: customer.name,
+            phone: customer.phone
+        },
+        movie: {
+            _id: movie.id,
+            title: movie.title,
+            dailyRentalRate: movie.dailyRentalRate
+        }
+    });
+
+    try {
+        new Fawn.Task()
+        // Two operations
+            .save('rentals', rental) // argument 1 is the collection's name
+            .update('movies', { _id: movie._id }, {
+                $inc: { numberInStock: -1 }
+            })
+            .run();
+    
+        res.send(rental);
+    } catch (ex) {
+        res.status(500).send('Rental creation failed.');
+    }
+});
+
+/**
+ * PUT
+ */
+// router.put();
+
+// /**
+//  * DELETE
+//  */
+// router.delete();
+
+/**
+ * Exports
+ */
+module.exports = router;

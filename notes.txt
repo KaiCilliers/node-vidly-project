@@ -1,0 +1,20 @@
+Object ID:
+    - _id: 5d39cdb00edbb02e5025678d
+    - 12 bytes for the ID
+        - first 4 bytes: timestamp
+            - no need for a 'created at' field in DB
+        - next 3 bytes: machine identifier
+            - two different machines will have two different indentifiers
+        - next 2 bytes: process identifier
+            - if you generate the same object ID on the same machine, but with different processes, the 2 bytes will differ
+        - last 3 bytes: counter
+            - if you create an object id on the same machine, same process,
+            same timestamp, but generate two different documents,
+            the counter will differ
+        - these 12 bytes uniquely identify a document in mongoDB
+        - you can generate the same id for two documents
+            - 1 byte = 8 bits
+            - 2 ^ 8 = 256 combinations
+            - counter = 3 bytes = 2 ^ 24 = 16Million
+            - if you generate more than 16M documents on the same machine, process, at the same timestamp
+            then the counter will overflow and you will get the same ID for two documents
