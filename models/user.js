@@ -1,13 +1,15 @@
 /**
  * Dependencies
  */
+const config = require('config');
+const jwt = require('jsonwebtoken');
 const Joi = require('@hapi/joi');
 const mongoose = require('mongoose');
 
 /**
  * Models with Schemas
  */
-const User = mongoose.model('User', new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -27,7 +29,21 @@ const User = mongoose.model('User', new mongoose.Schema({
         minlength: 5,
         maxlength: 1024
     }
-}));
+});
+/**
+ *  Not possible, because an anonymous function has no 'this'
+userSchema.methods.generateAuthToken = () => {
+    const token = jwt.sign({ _id: this._id }, config.get('jwtPrivateKey'));
+}
+
+IF you create a function that is a part of an object, you should not
+use an arrow function
+ */
+userSchema.methods.generateAuthToken = function() {
+    const token = jwt.sign({ _id: this._id }, config.get('jwtPrivateKey'));
+    return token;
+}
+const User = mongoose.model('User', userSchema);
 
 /**
  * Functions

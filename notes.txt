@@ -36,3 +36,5 @@ custom-environment-varaibles.json file name is important to be spelt like that
 setting env varaibles:
     - $env:myname="value"
     - getting it: $env:myname
+Information Expert Principle
+    - almost like single-responsibility concept
