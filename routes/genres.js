@@ -1,10 +1,21 @@
 /**
  * Dependencies
  */
+const auth = require('../middleware/auth');
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const {Genre, joiValidate} = require('../models/genre');
+
+/**
+ * router.get() syntax
+ * 
+ * router.get(
+ *  the route,
+ *  optional middleware,
+ *  route handler
+ * )
+ */
 
 /**
  * GET
@@ -24,7 +35,7 @@ router.get('/:id', async (req, res) => {
 /**
  * POST
  */
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     const { error } = joiValidate(req.body);
     if(error) return res.status(400).send(error.details[0].message);
 

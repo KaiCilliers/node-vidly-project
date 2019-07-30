@@ -34,6 +34,7 @@ mongoose.connect('mongodb://localhost/vidly')
 /**
  * Middleware
  */
+// you dont want to put auth middleware here, not all routes need that protection
 app.use(express.json());
 app.use('/api/genres', routerGenre);
 app.use('/api/customers', routerCustomer);
