@@ -18,3 +18,9 @@ Object ID:
             - counter = 3 bytes = 2 ^ 24 = 16Million
             - if you generate more than 16M documents on the same machine, process, at the same timestamp
             then the counter will overflow and you will get the same ID for two documents
+Authentication:
+    - Process of identifying if the user is who they say they are (username/password)
+    - Server authenticates user
+Authorisation:
+    - Determine if user has right permission to perform an operation
+ 
