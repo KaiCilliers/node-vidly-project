@@ -1,6 +1,7 @@
 /**
  * Dependencies
  */
+const _ = require('lodash');
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
@@ -17,18 +18,17 @@ router.post('/', async (req, res) => {
     let user = await User.findOne({ email: req.body.email });
     if (user) return res.status(400).send('User already registered.');
 
-    user = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password
-    });
+    user = new User(
+        _.pick(req.body,[
+            'name', 'email', 'password'
+        ])
+    );
 
     await user.save();
-    // Send user just these two fields
-    res.send({
-        name: user.name,
-        email: user.email
-    });
+    
+    res.send(
+        _.pick(user, ['_id', 'name', 'email'])
+    );
 });
 
 /**

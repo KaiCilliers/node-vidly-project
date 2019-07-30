@@ -18,3 +18,5 @@ Object ID:
             - counter = 3 bytes = 2 ^ 24 = 16Million
             - if you generate more than 16M documents on the same machine, process, at the same timestamp
             then the counter will overflow and you will get the same ID for two documents
+Try to use this for password requirements
+    - joi-password-complexity
