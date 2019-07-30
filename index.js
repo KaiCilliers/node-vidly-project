@@ -22,7 +22,7 @@ mongoose.connect('mongodb://localhost/vidly')
  * Middleware
  */
 app.use(express.json());
-app.use('/api/genres', routerGenre); // if route is /api/genre then use routerGenre api
+app.use('/api/genres', routerGenre);
 app.use('/api/customers', routerCustomer);
 app.use('/api/movies', routerMovie);
 app.use('/api/rentals', routerRental);
