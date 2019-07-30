@@ -9,7 +9,9 @@ const Fawn = require('fawn');
 const express = require('express');
 const router = express.Router();
 
-// Inits
+/**
+ * Initialisations
+ */
 Fawn.init(mongoose);
 
 /**
@@ -49,9 +51,7 @@ router.post('/', async (req, res) => {
     });
 
     try {
-        new Fawn.Task()
-        // Two operations
-            .save('rentals', rental) // argument 1 is the collection's name
+        new Fawn.Task().save('rentals', rental)
             .update('movies', { _id: movie._id }, {
                 $inc: { numberInStock: -1 }
             })
@@ -63,15 +63,6 @@ router.post('/', async (req, res) => {
     }
 });
 
-/**
- * PUT
- */
-// router.put();
-
-// /**
-//  * DELETE
-//  */
-// router.delete();
 
 /**
  * Exports

@@ -4,8 +4,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
-// const customer = require('../models/customer'); // not preferred
-const {Customer, joiValidate} = require('../models/customer'); // no need for customer.validate or customer.Customer
+const {Customer, joiValidate} = require('../models/customer');
 
 /**
  * GET

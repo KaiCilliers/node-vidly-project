@@ -64,8 +64,6 @@ const Rental = mongoose.model('Rental', new mongoose.Schema({
 /**
  * Functions
  */
-// Note, the joi validation is exactly what the client has to send the server
-// in order to create the desired (rental is this case) object
 function validateRental(rental) {
     const schema = {
         customerId: Joi.objectId().required(),

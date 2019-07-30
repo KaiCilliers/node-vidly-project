@@ -31,7 +31,7 @@ const Customer = mongoose.model('Customer', new mongoose.Schema({
  */
 function validateCustomer(customer) {
     const schema = {
-        isGold: Joi.boolean(), // not required because there is a default value assigned
+        isGold: Joi.boolean(),
         name: Joi.string().min(4).max(50).required(),
         phone: Joi.string().min(5).max(50).required()
     };

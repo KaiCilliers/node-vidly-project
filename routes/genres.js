@@ -28,12 +28,11 @@ router.post('/', async (req, res) => {
     const { error } = joiValidate(req.body);
     if(error) return res.status(400).send(error.details[0].message);
 
-    // Using let because when saving, the ID will be sent to us and we want to reset genre with the ID attribute
-    let genre = new Genre({
+    const genre = new Genre({
         name: req.body.name
     });
     
-    let = await genre.save();
+    await genre.save();
 
     res.send(genre);
 
