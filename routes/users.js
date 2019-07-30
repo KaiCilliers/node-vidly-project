@@ -24,7 +24,11 @@ router.post('/', async (req, res) => {
     });
 
     await user.save();
-    res.send(user);
+    // Send user just these two fields
+    res.send({
+        name: user.name,
+        email: user.email
+    });
 });
 
 /**
