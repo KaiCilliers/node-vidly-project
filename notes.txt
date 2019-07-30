@@ -32,3 +32,4 @@ JSON Web Token
     - then receive an ID (like a driver's license)
     - called a JWT than you can use next time you use the server's API
     - Mobile apps have something similar (depending on platform)
+custom-environment-varaibles.json file name is important to be spelt like that
