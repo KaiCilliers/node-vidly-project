@@ -10,6 +10,7 @@ const routerCustomer = require('./routes/customers');
 const routerMovie = require('./routes/movies');
 const routerRental = require('./routes/rentals');
 const routerUser = require('./routes/users');
+const routerAuth = require('./routes/auth');
 
 /**
  * Server and database connection
@@ -28,6 +29,7 @@ app.use('/api/customers', routerCustomer);
 app.use('/api/movies', routerMovie);
 app.use('/api/rentals', routerRental);
 app.use('/api/users', routerUser);
+app.use('/api/auth', routerAuth);
 
 /**
  * Listener
