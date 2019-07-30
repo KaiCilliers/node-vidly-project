@@ -20,3 +20,5 @@ Object ID:
             then the counter will overflow and you will get the same ID for two documents
 Try to use this for password requirements
     - joi-password-complexity
+lodash
+    - simply makes object manipulation easier
