@@ -27,3 +27,8 @@ Try to use this for password requirements
     - joi-password-complexity
 lodash
     - simply makes object manipulation easier
+JSON Web Token
+    - Allows you to authenticate once
+    - then receive an ID (like a driver's license)
+    - called a JWT than you can use next time you use the server's API
+    - Mobile apps have something similar (depending on platform)
