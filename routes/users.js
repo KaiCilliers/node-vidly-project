@@ -1,12 +1,22 @@
 /**
  * Dependencies
  */
+const auth = require('../middleware/auth');
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const {User, joiValidate} = require('../models/user');
+
+/**
+ * GET
+ */
+router.get('/me', auth, async (req, res) => {
+    // comes from the token that was decoded
+    const user = await User.findById(req.user._id).select('-password');
+    res.send(user);
+});
 
 /**
  * POST
