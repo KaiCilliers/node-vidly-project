@@ -1,6 +1,7 @@
 /**
  * Dependencies
  */
+const config = require('config');
 const Joi = require('@hapi/joi');
 Joi.objectId = require('joi-objectid')(Joi);
 const mongoose = require('mongoose');
@@ -11,6 +12,16 @@ const routerMovie = require('./routes/movies');
 const routerRental = require('./routes/rentals');
 const routerUser = require('./routes/users');
 const routerAuth = require('./routes/auth');
+
+/**
+ * Set environment variables
+ */
+if (!config.get('jwtPrivateKey')) {
+    // Throw fatal above is not defined (key not set/defined)
+    console.error('FATAL ERROR: jwtPrivateKey is not defined');
+    // 0 is success, anything else is not
+    process.exit(1);
+}
 
 /**
  * Server and database connection
