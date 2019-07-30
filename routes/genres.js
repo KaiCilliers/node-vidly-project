@@ -33,9 +33,7 @@ router.post('/', async (req, res) => {
     });
     
     await genre.save();
-
     res.send(genre);
-
 });
 
 /**
