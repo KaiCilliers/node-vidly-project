@@ -11,16 +11,24 @@ const {Genre, joiValidate} = require('../models/genre');
 /**
  * GET
  */
-router.get('/', async (req, res, next) => {
-    try {
-        const genres = await Genre.find().sort('name');
-        res.send(genres);
-    } catch (ex) {
-        // pass control to next middleware function in the request processing pipeline
-        // which is the error handling one :) as per convention
-        next(ex);
-    }
+/**
+ * Explanation. The anonymous function is not called by you.
+ * You are passing a function reference.
+ * Express uses the reference and calls it at runtime and passes
+ * the values req, res, next to the function.
+ * 
+ * This is considered called
+ * (req, res, next) => {}(val, val2, val3)
+ */
+router.get('/anotherpath', (req, res, next) => {
+
 });
+// problem is, you care calling the asyncMiddleware function, and
+// not passing a reference
+router.get('/', asyncMiddleware(async (req, res, next) => {
+    const genres = await Genre.find().sort('name');
+    res.send(genres);
+}));
 router.get('/:id', async (req, res) => {
     const genre = await Genre.findById(req.params.id);
     
@@ -70,6 +78,18 @@ router.delete('/:id', [auth, admin], async (req, res) => {
 
     res.send(genre);
 });
+
+/**
+ * Functions
+ */
+async function asyncMiddleware(handler) { // handler is expected to be an async function
+    // handler is a function (a route handler function so to speak :)
+    try{
+        await handler(req, res);
+    } catch(ex) {
+        next(ex);
+    }
+}
 
 /**
  * Exports
