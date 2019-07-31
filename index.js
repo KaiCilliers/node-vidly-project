@@ -1,7 +1,6 @@
 /**
  * Dependencies
  */
-const config = require('config');
 const Joi = require('@hapi/joi');
 Joi.objectId = require('joi-objectid')(Joi);
 const express = require('express');
@@ -10,17 +9,11 @@ const express = require('express');
  * Server Connection
  */
 const app = express();
+// load first so that you can log any errors with loading rest of modules
 require('./startup/logging');
 require('./startup/routes')(app);
 require('./startup/db')();
-
-/**
- * Environment Varaibles Setup
- */
-if (!config.get('jwtPrivateKey')) {
-    console.error('FATAL ERROR: jwtPrivateKey is not defined');
-    process.exit(1);
-}
+require('./startup/config')();
 
 /**
  * Listener
