@@ -2,7 +2,7 @@
  * Dependencies
  */
 require('express-async-errors'); // handling async errors with minimal boiler plate code
-const winston = require('winston'); // default has one transport (console)
+const winston = require('winston'); // default has no console anymore i guess
 const error = require('./middleware/error');
 const config = require('config');
 const Joi = require('@hapi/joi');
