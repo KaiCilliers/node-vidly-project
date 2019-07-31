@@ -18,13 +18,24 @@ const routerUser = require('./routes/users');
 const routerAuth = require('./routes/auth');
 
 /**
+ * process is an event emitter
+ * on - subscribe to an event
+ */
+process.on('uncaughtException', (ex) => {
+    console.log('WE GOT AN UNCAUGHT EXCEPTION');
+    // winston.error(ex.message, ex); winston is broken xD
+});
+
+/**
  * Initialisations logging setup
  */
 winston.add(new winston.transports.File({ filename: 'logfile.log' }));
 winston.add(new winston.transports.MongoDB({
     db: 'mongodb://localhost/vidly',
-    level: 'error'
+    level: 'info'
 }));
+
+throw new Error('Something failed during startup.');
 
 /**
  * Set environment variables
