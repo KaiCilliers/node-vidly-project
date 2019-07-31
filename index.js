@@ -17,9 +17,7 @@ const routerAuth = require('./routes/auth');
  * Set environment variables
  */
 if (!config.get('jwtPrivateKey')) {
-    // Throw fatal above is not defined (key not set/defined)
     console.error('FATAL ERROR: jwtPrivateKey is not defined');
-    // 0 is success, anything else is not
     process.exit(1);
 }
 
@@ -34,7 +32,6 @@ mongoose.connect('mongodb://localhost/vidly')
 /**
  * Middleware
  */
-// you dont want to put auth middleware here, not all routes need that protection
 app.use(express.json());
 app.use('/api/genres', routerGenre);
 app.use('/api/customers', routerCustomer);

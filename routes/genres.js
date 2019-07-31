@@ -9,16 +9,6 @@ const mongoose = require('mongoose');
 const {Genre, joiValidate} = require('../models/genre');
 
 /**
- * router.get() syntax
- * 
- * router.get(
- *  the route,
- *  optional middleware,
- *  route handler
- * )
- */
-
-/**
  * GET
  */
 router.get('/', async (req, res) => {
@@ -67,8 +57,6 @@ router.put('/:id', async (req, res) => {
 /**
  * DELETE
  */
-// executes auth middleware then admin middleware
-// if both go through then function body will be executed
 router.delete('/:id', [auth, admin], async (req, res) => {
     const genre = await Genre.findByIdAndRemove(req.params.id);
 
