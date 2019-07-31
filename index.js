@@ -20,11 +20,28 @@ const routerAuth = require('./routes/auth');
 /**
  * process is an event emitter
  * on - subscribe to an event
+ * 
+ * this only works with syncrhonous code
+ * 
+ * when process catches an error, best practice is
+ * to restart application. It could be in an unclean state
  */
 process.on('uncaughtException', (ex) => {
     console.log('WE GOT AN UNCAUGHT EXCEPTION');
     // winston.error(ex.message, ex); winston is broken xD
+    process.exit(1);
 });
+/**
+ * Works for async code :)
+ */
+process.on('unhandledRejection', (ex) => {
+    console.log('WE GOT AN UNHANDLED REJECTION');
+    // winston.error(ex.message, ex); winston is broken xD
+    process.exit(1);
+});
+
+// handles sync code instead of process.on
+winston.handleExceptions(new winston.transports.File({ filename: 'uncaughtExceptions.log' }));
 
 /**
  * Initialisations logging setup
@@ -35,7 +52,8 @@ winston.add(new winston.transports.MongoDB({
     level: 'info'
 }));
 
-throw new Error('Something failed during startup.');
+const p = Promise.reject(new Error('FAILED badly'));
+p.then(() => console.log('Done'));
 
 /**
  * Set environment variables
