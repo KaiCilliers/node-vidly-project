@@ -1,8 +1,8 @@
 /**
  * Dependencies
  */
-require('express-async-errors'); // handling async errors with minimal boiler plate code
-const winston = require('winston'); // default has no console anymore i guess
+require('express-async-errors');
+const winston = require('winston');
 require('winston-mongodb');
 const error = require('./middleware/error');
 const config = require('config');
@@ -18,17 +18,20 @@ const routerUser = require('./routes/users');
 const routerAuth = require('./routes/auth');
 
 /**
- * Works for async code :)
+ * Server Connection
  */
+const app = express();
+
+/**
+ * Error handling
+ */
+winston.handleExceptions(new winston.transports.File({ filename: 'uncaughtExceptions.log' }));
 process.on('unhandledRejection', (ex) => {
     throw ex; // winston will catch this as sync code
 });
 
-// handles sync code instead of process.on
-winston.handleExceptions(new winston.transports.File({ filename: 'uncaughtExceptions.log' }));
-
 /**
- * Initialisations logging setup
+ * Logging Setup
  */
 winston.add(new winston.transports.File({ filename: 'logfile.log' }));
 winston.add(new winston.transports.MongoDB({
@@ -40,7 +43,7 @@ const p = Promise.reject(new Error('FAILED badly'));
 p.then(() => console.log('Done'));
 
 /**
- * Set environment variables
+ * Environment Varaibles Setup
  */
 if (!config.get('jwtPrivateKey')) {
     console.error('FATAL ERROR: jwtPrivateKey is not defined');
@@ -48,9 +51,8 @@ if (!config.get('jwtPrivateKey')) {
 }
 
 /**
- * Server and database connection
+ * Database Connection
  */
-const app = express();
 mongoose.connect('mongodb://localhost/vidly')
     .then(() => console.log('Connected to MongoDB...'))
     .catch(err => console.error('Could not connect to MongoDB...'));
@@ -65,8 +67,7 @@ app.use('/api/movies', routerMovie);
 app.use('/api/rentals', routerRental);
 app.use('/api/users', routerUser);
 app.use('/api/auth', routerAuth);
-// Error handling
-app.use(error); // not calling ('error()'), just passing reference ('error')
+app.use(error);
 
 /**
  * Listener
