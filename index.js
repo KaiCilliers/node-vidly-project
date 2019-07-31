@@ -3,6 +3,7 @@
  */
 require('express-async-errors'); // handling async errors with minimal boiler plate code
 const winston = require('winston'); // default has no console anymore i guess
+require('winston-mongodb');
 const error = require('./middleware/error');
 const config = require('config');
 const Joi = require('@hapi/joi');
@@ -17,10 +18,13 @@ const routerUser = require('./routes/users');
 const routerAuth = require('./routes/auth');
 
 /**
- * Initialisations
+ * Initialisations logging setup
  */
-// adding another transport (File)
 winston.add(new winston.transports.File({ filename: 'logfile.log' }));
+winston.add(new winston.transports.MongoDB({
+    db: 'mongodb://localhost/vidly',
+    level: 'error'  // only error messages will be logged. Info would log info and above levels
+}));
 
 /**
  * Set environment variables

@@ -5,6 +5,11 @@ const winston = require('winston');
 
 /**
  * Function and Exports
+ * 
+ * winston not working properly as it should at v5
+ * downgraded to v3
+ * 
+ * winston had too many changes, streamline it later to your liking
  */
 module.exports = function(err, req, res, next) {
     // syntax (logging level, message, optional err)
@@ -12,7 +17,7 @@ module.exports = function(err, req, res, next) {
     // winston.error(err.message);
     // passing metadata
     winston.error(err.message, err);
-    res.status(500).send('Something failed');
+    res.status(500).send('Something failed v3');
 }
 /**
  * Logging levels available
