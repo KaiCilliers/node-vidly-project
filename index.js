@@ -23,7 +23,7 @@ const routerAuth = require('./routes/auth');
 winston.add(new winston.transports.File({ filename: 'logfile.log' }));
 winston.add(new winston.transports.MongoDB({
     db: 'mongodb://localhost/vidly',
-    level: 'error'  // only error messages will be logged. Info would log info and above levels
+    level: 'error'
 }));
 
 /**
