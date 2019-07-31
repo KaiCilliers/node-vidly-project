@@ -82,6 +82,12 @@ router.delete('/:id', [auth, admin], async (req, res) => {
 /**
  * Functions
  */
+// This function has to return a route handler function that
+// looks like (req, res, next)
+// Acts like a factory
+// Call it a function which returns a new function
+// Returned function is a route handler which Express can call
+// and pass req, res, next arguments to at runtime
 async function asyncMiddleware(handler) { // handler is expected to be an async function
     // handler is a function (a route handler function so to speak :)
     try{
