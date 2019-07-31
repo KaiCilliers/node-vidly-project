@@ -10,4 +10,5 @@ const winston = require('winston');
 module.exports = function() {
     mongoose.connect('mongodb://localhost/vidly')
         .then(() => winston.info('Connected to MongoDB...'));
+        // catch is removed so that global error handler can catch an error
 }
