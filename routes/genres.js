@@ -1,7 +1,6 @@
 /**
  * Dependencies
  */
-const asyncMiddleware = require('../middleware/async');
 const admin = require('../middleware/admin');
 const auth = require('../middleware/auth');
 const express = require('express');
@@ -12,10 +11,10 @@ const {Genre, joiValidate} = require('../models/genre');
 /**
  * GET
  */
-router.get('/', asyncMiddleware(async (req, res, next) => {
+router.get('/', async (req, res, next) => {
     const genres = await Genre.find().sort('name');
     res.send(genres);
-}));
+});
 router.get('/:id', async (req, res) => {
     const genre = await Genre.findById(req.params.id);
     
@@ -27,7 +26,7 @@ router.get('/:id', async (req, res) => {
 /**
  * POST
  */
-router.post('/', auth, asyncMiddleware(async (req, res) => {
+router.post('/', auth, async (req, res) => {
     const { error } = joiValidate(req.body);
     if(error) return res.status(400).send(error.details[0].message);
 
@@ -37,7 +36,7 @@ router.post('/', auth, asyncMiddleware(async (req, res) => {
     
     await genre.save();
     res.send(genre);
-}));
+});
 
 /**
  * PUT

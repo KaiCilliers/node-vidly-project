@@ -1,6 +1,7 @@
 /**
  * Dependencies
  */
+require('express-async-errors'); // handling async errors with minimal boiler plate code
 const error = require('./middleware/error');
 const config = require('config');
 const Joi = require('@hapi/joi');
