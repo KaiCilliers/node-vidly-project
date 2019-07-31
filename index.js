@@ -18,26 +18,10 @@ const routerUser = require('./routes/users');
 const routerAuth = require('./routes/auth');
 
 /**
- * process is an event emitter
- * on - subscribe to an event
- * 
- * this only works with syncrhonous code
- * 
- * when process catches an error, best practice is
- * to restart application. It could be in an unclean state
- */
-process.on('uncaughtException', (ex) => {
-    console.log('WE GOT AN UNCAUGHT EXCEPTION');
-    // winston.error(ex.message, ex); winston is broken xD
-    process.exit(1);
-});
-/**
  * Works for async code :)
  */
 process.on('unhandledRejection', (ex) => {
-    console.log('WE GOT AN UNHANDLED REJECTION');
-    // winston.error(ex.message, ex); winston is broken xD
-    process.exit(1);
+    throw ex; // winston will catch this as sync code
 });
 
 // handles sync code instead of process.on
