@@ -38,3 +38,5 @@ setting env varaibles:
     - getting it: $env:myname
 Information Expert Principle
     - almost like single-responsibility concept
+FATAL ERROR: jwtPrivateKey is not defined
+    - $env:vidly_jwtPrivateKey="mySecureKey"
