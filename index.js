@@ -2,6 +2,7 @@
  * Dependencies
  */
 require('express-async-errors'); // handling async errors with minimal boiler plate code
+const winston = require('winston'); // default has one transport (console)
 const error = require('./middleware/error');
 const config = require('config');
 const Joi = require('@hapi/joi');
@@ -14,6 +15,12 @@ const routerMovie = require('./routes/movies');
 const routerRental = require('./routes/rentals');
 const routerUser = require('./routes/users');
 const routerAuth = require('./routes/auth');
+
+/**
+ * Initialisations
+ */
+// adding another transport (File)
+winston.add(new winston.transports.File({ filename: 'logfile.log' }));
 
 /**
  * Set environment variables
