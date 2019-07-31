@@ -1,6 +1,7 @@
 /**
  * Dependencies
  */
+const error = require('./middleware/error');
 const config = require('config');
 const Joi = require('@hapi/joi');
 Joi.objectId = require('joi-objectid')(Joi);
@@ -39,6 +40,8 @@ app.use('/api/movies', routerMovie);
 app.use('/api/rentals', routerRental);
 app.use('/api/users', routerUser);
 app.use('/api/auth', routerAuth);
+// Error handling
+app.use(error); // not calling ('error()'), just passing reference ('error')
 
 /**
  * Listener

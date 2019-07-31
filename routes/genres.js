@@ -11,9 +11,15 @@ const {Genre, joiValidate} = require('../models/genre');
 /**
  * GET
  */
-router.get('/', async (req, res) => {
-    const genres = await Genre.find().sort('name');
-    res.send(genres);
+router.get('/', async (req, res, next) => {
+    try {
+        const genres = await Genre.find().sort('name');
+        res.send(genres);
+    } catch (ex) {
+        // pass control to next middleware function in the request processing pipeline
+        // which is the error handling one :) as per convention
+        next(ex);
+    }
 });
 router.get('/:id', async (req, res) => {
     const genre = await Genre.findById(req.params.id);
