@@ -2,6 +2,8 @@
  * Dependencies
  */
 const express = require('express');
+const morgan = require('morgan');
+const logger = require('./logging');
 const error = require('../middleware/error');
 const genres = require('../routes/genres');// CTRL + D to edit multiple places :)
 const customers = require('../routes/customers');
@@ -15,6 +17,7 @@ const auth = require('../routes/auth');
  */
 module.exports = function(app) {
     app.use(express.json());
+    app.use(morgan('combined', { stream: logger.stream }));
     app.use('/api/genres', genres);
     app.use('/api/customers', customers);
     app.use('/api/movies', movies);
