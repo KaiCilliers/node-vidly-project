@@ -40,3 +40,6 @@ Information Expert Principle
     - almost like single-responsibility concept
 FATAL ERROR: jwtPrivateKey is not defined
     - $env:vidly_jwtPrivateKey="mySecureKey"
+NOTE - FIX winston so that your logs work
+    - [winston] Attempt to write logs with no transports {"message":"Listening on port 3002...","level":"info"}
+(node:10320) DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.[winston] Attempt to write logs with no transports {"message":"Connected to MongoDB...","level":"info"}
