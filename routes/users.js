@@ -12,6 +12,13 @@ const {User, joiValidate} = require('../models/user');
  * GET
  */
 router.get('/me', auth, async (req, res) => {
+    /**
+     * Client only sends a JWT. The request goes through
+     * the middleware specified ('auth') that sets the 
+     * user object which contains the user's ID.
+     * 
+     * The information is extracted from the JSON Web Token
+     */
     const user = await User.findById(req.user._id).select('-password');
     res.send(user);
 });
