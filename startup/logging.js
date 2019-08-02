@@ -1,7 +1,7 @@
 /**
  * Dependencies
  */
-const winston = require('winston');
+const {createLogger, transports} = require('winston');
 require('winston-mongodb');
 const options = require('../config/log-transports');
 /**
@@ -13,13 +13,13 @@ require('express-async-errors');
 /**
  * Logging and Error Handling
  */
-logger = winston.createLogger({
+logger = createLogger({
     transports: [
-        new winston.transports.File(options.logs),
-        new winston.transports.Console(options.console),
-        new winston.transports.MongoDB(options.mongodb),
-        new winston.transports.File(options.errors),
-        new winston.transports.File(options.combined)
+        new transports.File(options.logs),
+        new transports.Console(options.console),
+        new transports.MongoDB(options.mongodb),
+        new transports.File(options.errors),
+        new transports.File(options.combined)
       ],
       exitOnError: false
 });
