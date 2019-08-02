@@ -36,6 +36,8 @@ const Movie = mongoose.model('Movie', new mongoose.Schema({
 
 /**
  * Functions
+ * 
+ * Validate data provided by client
  */
 function validateMovie(movie) {
     const schema = {

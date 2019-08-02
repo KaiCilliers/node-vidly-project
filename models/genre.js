@@ -19,6 +19,8 @@ const Genre = mongoose.model('Genre', genreSchema);
 
 /**
  * Functions
+ * 
+ * Validate data provided by client
  */
 function validateGenre(genre) {
     const schema = {

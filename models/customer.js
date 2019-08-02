@@ -5,7 +5,7 @@ const Joi = require('@hapi/joi');
 const mongoose = require('mongoose');
 
 /**
- * Model
+ * Model with Schema
  */
 const Customer = mongoose.model('Customer', new mongoose.Schema({
     isGold: {
@@ -28,6 +28,8 @@ const Customer = mongoose.model('Customer', new mongoose.Schema({
 
 /**
  * Functions
+ * 
+ * Validate data provided by client
  */
 function validateCustomer(customer) {
     const schema = {

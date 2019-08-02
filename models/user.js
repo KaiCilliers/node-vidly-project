@@ -31,6 +31,7 @@ const userSchema = new mongoose.Schema({
     },
     isAdmin: Boolean
 });
+// Provide a method on the schema object
 userSchema.methods.generateAuthToken = function() {
     const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, config.get('jwtPrivateKey'));
     return token;
@@ -39,6 +40,8 @@ const User = mongoose.model('User', userSchema);
 
 /**
  * Functions
+ * 
+ * Validate data provided by client
  */
 function validateUser(user) {
     const schema = {

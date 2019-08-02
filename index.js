@@ -5,20 +5,30 @@ const logger = require('./startup/logging');
 const express = require('express');
 require('winston-mongodb');
 
-// winston does not handle rejected promises outside express
+/**
+ * Winston does not handle promise rejections outside Express
+ * 
+ * Throw an synchronous error for Winston to catch
+ */
 process.on('unhandledRejection', (ex) => {
   throw ex;
 });
 
-const p = Promise.reject(new Error('promise part message'));
-p.then(() => console.log('Doneish'));
+/**
+ * Testing error catching
+ */
+// const p = Promise.reject(new Error('promise part message'));
+// p.then(() => console.log('Doneish'));
 // throw new Error('startup FAIL');
 
 /**
  * Server Connection
  */
 const app = express();
-// require('./startup/logging');
+
+/**
+ * Startup Code
+ */
 require('./startup/routes')(app);
 require('./startup/db')();
 require('./startup/config')();

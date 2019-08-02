@@ -5,7 +5,6 @@ const admin = require('../middleware/admin');
 const auth = require('../middleware/auth');
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 const {Genre, joiValidate} = require('../models/genre');
 
 /**

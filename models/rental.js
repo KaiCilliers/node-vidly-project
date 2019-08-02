@@ -63,6 +63,8 @@ const Rental = mongoose.model('Rental', new mongoose.Schema({
 
 /**
  * Functions
+ * 
+ * Validate data provided by client
  */
 function validateRental(rental) {
     const schema = {

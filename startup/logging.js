@@ -4,6 +4,10 @@
 const winston = require('winston');
 const appRoot = require('app-root-path');
 require('winston-mongodb');
+/**
+ * This lib prevents using the async.js middleware
+ * that wraps route handlers in try/catch blocks
+ */
 require('express-async-errors');
 
 /**

@@ -5,7 +5,7 @@ const express = require('express');
 const morgan = require('morgan');
 const logger = require('./logging');
 const error = require('../middleware/error');
-const genres = require('../routes/genres');// CTRL + D to edit multiple places :)
+const genres = require('../routes/genres');
 const customers = require('../routes/customers');
 const movies = require('../routes/movies');
 const rentals = require('../routes/rentals');
@@ -13,7 +13,7 @@ const users = require('../routes/users');
 const auth = require('../routes/auth');
 
 /**
- * Functions and Exports
+ * Setup Middleware
  */
 module.exports = function(app) {
     app.use(express.json());

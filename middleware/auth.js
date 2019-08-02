@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 
 /**
- * Functions and Exports
+ * Validate an JWT token sent to server
  */
 module.exports = function auth(req, res, next) {
     const token = req.header('x-auth-token');

@@ -6,7 +6,6 @@ const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 const {User, joiValidate} = require('../models/user');
 
 /**
@@ -38,6 +37,7 @@ router.post('/', async (req, res) => {
 
     await user.save();
     
+    // Here is where you call the function added to the user schema
     const token = user.generateAuthToken();
     res.header('x-auth-token', token).send(
         _.pick(user, ['_id', 'name', 'email'])
