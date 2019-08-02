@@ -55,13 +55,13 @@ module.exports = {
         colorize: true
     },
     console: {
-        level: 'debug',
+        level: 'silly',
         format: combine(
             label({ label: 'App'}),
             timestamp(),
             printFormat
         ),
-        handleExceptions: false,
+        handleExceptions: true,
         json: false,
         colorize: true,
     },

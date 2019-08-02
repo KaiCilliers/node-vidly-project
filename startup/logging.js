@@ -21,7 +21,7 @@ logger = createLogger({
         new transports.File(options.errors),
         new transports.File(options.combined)
       ],
-      exitOnError: false
+      exitOnError: true
 });
 
 /**
