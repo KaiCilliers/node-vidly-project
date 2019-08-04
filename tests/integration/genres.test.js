@@ -67,65 +67,58 @@ describe('/api/genres', () => {
      * Amount of tests >= number of execution paths
      */
     describe('POST /', () => {
-        // Test 1
-        it('should return 401 if client is not logged in', async () => {
-            const res = await request(server)
+
+        /**
+         * Refractoring Logic (Mosh's method)
+         * 
+         * Define the happy path, and then in each test,
+         * we change one parameter that clearly aligns
+         * with the name of the test
+         */
+        let token;
+        let name;
+        
+        // Execute
+        const exec = async () => {
+            return await request(server)
                 .post('/api/genres')
-                .send({ name: 'genre1' });
+                .set('x-auth-token', token)
+                .send({ name }); // same as { name: name } works if key and value are the same
+        }
+
+        // Here you want to set the values of the happy path
+        beforeEach(() => {
+            token = new User().generateAuthToken();
+            name = 'genre1';
+        });
+
+        // Authenticate (not happy)
+        it('should return 401 if client is not logged in', async () => {
+            token = '';
+            const res = await exec();
             expect(res.status).toBe(401);
         });
-        // Test 2.1
+        
+        // Validation (not happy)
         it('should return 400 if genre less than 5 characters', async () => {
-            const token = new User().generateAuthToken();
-            const res = await request(server)
-                .post('/api/genres')
-                .set('x-auth-token', token)
-                .send({ name: '1234' });
-
+            name = '1234';
+            const res = await exec();
             expect(res.status).toBe(400);
         });
-        // Test 2.2
         it('should return 400 if genre more than 50 characters', async () => {
-            const token = new User().generateAuthToken();
-
-            /**
-             * Generate a new name
-             * 
-             * Make an array of x elements and 
-             * use the join method to add a string
-             * inbetween each element, effectively creating
-             * a string with the length of the amount of
-             * elements in the array minus one
-             */
-            const mockString = new Array(52).join('a');
-            
-            const res = await request(server)
-                .post('/api/genres')
-                .set('x-auth-token', token)
-                .send({ name: mockString });
-
+            name = new Array(52).join('a');
+            const res = await exec();
             expect(res.status).toBe(400);
         });
-        // Test 3.1
-        it('should save the genre if it is valid', async () => {
-            const token = new User().generateAuthToken();
-            
-            const res = await request(server)
-                .post('/api/genres')
-                .set('x-auth-token', token)
-                .send({ name: 'genre1' });
 
+        // Happy Path
+        it('should save the genre if it is valid', async () => {
+            await exec();
             const genre = await Genre.find({ name: 'genre1'});
             expect(genre).not.toBe(null);
         });
-        // Test 3.2
         it('should return the genre if it is valid', async () => {
-            const token = new User().generateAuthToken();
-            
-            const res = await request(server)
-                .post('/api/genres')
-                .set('x-auth-token', token)
-                .send({ name: 'genre1' });
+            const res = await exec();
 
             expect(res.body).toHaveProperty('_id');
             expect(res.body).toHaveProperty('name', 'genre1');
