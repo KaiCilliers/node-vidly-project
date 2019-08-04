@@ -1,5 +1,6 @@
 const request = require('superTest');
 const {Genre} = require('../../models/genre');
+const {User} = require('../../models/user');
 
 let server;
 
@@ -56,7 +57,6 @@ describe('/api/genres', () => {
             expect(res.body).toHaveProperty('name', genre.name);
         });
         it('should return 404 if invalid id is passed', async () => {
-            // This will fail, due to the ID being validated first and returning a 500 error
             const res = await request(server).get('/api/genres/1');
 
             expect(res.status).toBe(404);
@@ -72,6 +72,15 @@ describe('/api/genres', () => {
                 .post('/api/genres')
                 .send({ name: 'genre1' });
             expect(res.status).toBe(401);
+        });
+        it('should return 400 if genre less than 5 characters', async () => {
+            const token = new User().generateAuthToken();
+            const res = await request(server)
+                .post('/api/genres')
+                .set('x-auth-token', token)
+                .send({ name: '1234' });
+
+            expect(res.status).toBe(400);
         });
     });
 });
