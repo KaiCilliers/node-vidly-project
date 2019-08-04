@@ -67,12 +67,14 @@ describe('/api/genres', () => {
      * Amount of tests >= number of execution paths
      */
     describe('POST /', () => {
-        it('should return 401 if client is not logger in', async () => {
+        // Test 1
+        it('should return 401 if client is not logged in', async () => {
             const res = await request(server)
                 .post('/api/genres')
                 .send({ name: 'genre1' });
             expect(res.status).toBe(401);
         });
+        // Test 2.1
         it('should return 400 if genre less than 5 characters', async () => {
             const token = new User().generateAuthToken();
             const res = await request(server)
@@ -82,6 +84,7 @@ describe('/api/genres', () => {
 
             expect(res.status).toBe(400);
         });
+        // Test 2.2
         it('should return 400 if genre more than 50 characters', async () => {
             const token = new User().generateAuthToken();
 
@@ -102,6 +105,30 @@ describe('/api/genres', () => {
                 .send({ name: mockString });
 
             expect(res.status).toBe(400);
+        });
+        // Test 3.1
+        it('should save the genre if it is valid', async () => {
+            const token = new User().generateAuthToken();
+            
+            const res = await request(server)
+                .post('/api/genres')
+                .set('x-auth-token', token)
+                .send({ name: 'genre1' });
+
+            const genre = await Genre.find({ name: 'genre1'});
+            expect(genre).not.toBe(null);
+        });
+        // Test 3.2
+        it('should return the genre if it is valid', async () => {
+            const token = new User().generateAuthToken();
+            
+            const res = await request(server)
+                .post('/api/genres')
+                .set('x-auth-token', token)
+                .send({ name: 'genre1' });
+
+            expect(res.body).toHaveProperty('_id');
+            expect(res.body).toHaveProperty('name', 'genre1');
         });
     });
 });

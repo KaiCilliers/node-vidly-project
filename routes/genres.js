@@ -27,19 +27,15 @@ router.get('/:id', validateObjectId, async (req, res) => {
 /**
  * POST
  */
-    // Another test - if user is not logger in, respond with 401 error - unauthorised
 router.post('/', auth, async (req, res) => {
     const { error } = joiValidate(req.body);
-    // Execution Path 1 - return 400 error
     if(error) return res.status(400).send(error.details[0].message);
 
-    // Execution Path 2
     const genre = new Genre({
         name: req.body.name
     });
-        // Path 1 - make sure genre is saved in the database
     await genre.save();
-        // Part 2 - make sure the genre is in the body of the response
+    
     res.send(genre);
 });
 
