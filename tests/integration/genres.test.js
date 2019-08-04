@@ -63,43 +63,41 @@ describe('/api/genres', () => {
         });
     });
 
-    /**
-     * Amount of tests >= number of execution paths
-     */
     describe('POST /', () => {
 
         /**
-         * Refractoring Logic (Mosh's method)
-         * 
-         * Define the happy path, and then in each test,
-         * we change one parameter that clearly aligns
-         * with the name of the test
+         * Globals
          */
         let token;
         let name;
         
-        // Execute
+        /**
+         * Body 
+         */
         const exec = async () => {
             return await request(server)
                 .post('/api/genres')
                 .set('x-auth-token', token)
-                .send({ name }); // same as { name: name } works if key and value are the same
+                .send({ name });
         }
 
-        // Here you want to set the values of the happy path
+        /**
+         * Happy Values
+         */
         beforeEach(() => {
             token = new User().generateAuthToken();
             name = 'genre1';
         });
-
-        // Authenticate (not happy)
+        
+        /**
+         * TESTS
+         */
         it('should return 401 if client is not logged in', async () => {
             token = '';
             const res = await exec();
             expect(res.status).toBe(401);
         });
         
-        // Validation (not happy)
         it('should return 400 if genre less than 5 characters', async () => {
             name = '1234';
             const res = await exec();
@@ -111,7 +109,6 @@ describe('/api/genres', () => {
             expect(res.status).toBe(400);
         });
 
-        // Happy Path
         it('should save the genre if it is valid', async () => {
             await exec();
             const genre = await Genre.find({ name: 'genre1'});
