@@ -55,8 +55,11 @@ describe('/api/genres', () => {
             // This is better way to test it
             expect(res.body).toHaveProperty('name', genre.name);
         });
-        // it('should throw an Error if ID is falsey', () => {
+        it('should return 404 if invalid id is passed', async () => {
+            // This will fail, due to the ID being validated first and returning a 500 error
+            const res = await request(server).get('/api/genres/1');
 
-        // });
+            expect(res.status).toBe(404);
+        });
     });
 });
