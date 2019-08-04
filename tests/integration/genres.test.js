@@ -82,5 +82,26 @@ describe('/api/genres', () => {
 
             expect(res.status).toBe(400);
         });
+        it('should return 400 if genre more than 50 characters', async () => {
+            const token = new User().generateAuthToken();
+
+            /**
+             * Generate a new name
+             * 
+             * Make an array of x elements and 
+             * use the join method to add a string
+             * inbetween each element, effectively creating
+             * a string with the length of the amount of
+             * elements in the array minus one
+             */
+            const mockString = new Array(52).join('a');
+            
+            const res = await request(server)
+                .post('/api/genres')
+                .set('x-auth-token', token)
+                .send({ name: mockString });
+
+            expect(res.status).toBe(400);
+        });
     });
 });
