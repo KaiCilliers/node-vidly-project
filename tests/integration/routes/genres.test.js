@@ -4,6 +4,7 @@
 const request = require('superTest');
 const {Genre} = require('../../../models/genre');
 const {User} = require('../../../models/user');
+const mongoose = require('mongoose');
 
 /**
  * Globals
@@ -50,6 +51,13 @@ describe('/api/genres', () => {
             // expect(res.body).toMatchObject(genre);
             // This is better way to test it
             expect(res.body).toHaveProperty('name', genre.name);
+        });
+        // Added this test after checking coverage/Icov-report/index.html
+        it('should return 404 if no genre with the given id exists', async () => {
+            const id = mongoose.Types.ObjectId();
+            const res = await request(server).get(`/api/genres/${id}`);
+
+            expect(res.status).toBe(404);
         });
         it('should return 404 if invalid id is passed', async () => {
             const res = await request(server).get('/api/genres/1');
