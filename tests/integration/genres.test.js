@@ -62,4 +62,16 @@ describe('/api/genres', () => {
             expect(res.status).toBe(404);
         });
     });
+
+    /**
+     * Amount of tests >= number of execution paths
+     */
+    describe('POST /', () => {
+        it('should return 401 if client is not logger in', async () => {
+            const res = await request(server)
+                .post('/api/genres')
+                .send({ name: 'genre1' });
+            expect(res.status).toBe(401);
+        });
+    });
 });
