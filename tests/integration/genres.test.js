@@ -41,4 +41,22 @@ describe('/api/genres', () => {
             // await Genre.remove({});
         });
     });
+
+    describe('GET /:id', () => {
+        it('should return a genre if a valid id is passed', async () => {
+            const genre = new Genre({ name: 'genre1' });
+            await genre.save();
+
+            const res = await request(server).get(`/api/genres/${genre._id}`);
+
+            expect(res.status).toBe(200);
+            // This will fail due to comparing an objectID sting and array
+            // expect(res.body).toMatchObject(genre);
+            // This is better way to test it
+            expect(res.body).toHaveProperty('name', genre.name);
+        });
+        // it('should throw an Error if ID is falsey', () => {
+
+        // });
+    });
 });
