@@ -1,7 +1,7 @@
 /**
  * Dependencies
  */
-const mongoose = require('mongoose');
+const validateObjectId = require('../middleware/validateObjectId');
 const admin = require('../middleware/admin');
 const auth = require('../middleware/auth');
 const express = require('express');
@@ -16,12 +16,7 @@ router.get('/', async (req, res, next) => {
     const genres = await Genre.find().sort('name');
     res.send(genres);
 });
-// This call would always have returned 500 error if ID was invalid,
-// Validate it first
-router.get('/:id', async (req, res) => {
-    if (!mongoose.Types.ObjectId.isValid(req.params.id))
-        return res.status(404).send('Invalid ID');
-
+router.get('/:id', validateObjectId, async (req, res) => {
     const genre = await Genre.findById(req.params.id);
     
     if(!genre) return res.status(404).send('Genre with provided ID not found');
