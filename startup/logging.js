@@ -2,7 +2,7 @@
  * Dependencies
  */
 const {createLogger, transports} = require('winston');
-require('winston-mongodb');
+// require('winston-mongodb');
 const options = require('../config/log-transports');
 /**
  * This lib prevents using the async.js middleware
@@ -17,7 +17,7 @@ logger = createLogger({
     transports: [
         new transports.File(options.logs),
         new transports.Console(options.console),
-        new transports.MongoDB(options.mongodb),
+        // new transports.MongoDB(options.mongodb),
         new transports.File(options.errors),
         new transports.File(options.combined)
       ],
