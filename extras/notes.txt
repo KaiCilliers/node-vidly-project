@@ -50,3 +50,11 @@ Winston Transports:
                 format: winston.format.simple()
             }));
         }
+
+ENVIRONMENT VARIABLES to setting
+    - NODE_ENV
+        - production
+        - test
+        - development
+    - vidly_jwtPrivateKey
+        - mySecureKey

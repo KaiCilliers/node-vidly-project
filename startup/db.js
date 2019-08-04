@@ -3,11 +3,13 @@
  */
 const mongoose = require('mongoose');
 const logger = require('../startup/logging');
+const config = require('config');
 
 /**
  * Start Database Connection
  */
 module.exports = function() {
-    mongoose.connect('mongodb://localhost:27017/vidly', { useNewUrlParser: true })
-        .then(() => logger.info('Connected to MongoDB...'));
+    const db = config.get('db');
+    mongoose.connect(db, { useNewUrlParser: true })
+        .then(() => logger.info(`Connected to ${db}...`));
 }
