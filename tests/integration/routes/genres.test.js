@@ -1,45 +1,40 @@
+/**
+ * Dependencies
+ */
 const request = require('superTest');
-const {Genre} = require('../../models/genre');
-const {User} = require('../../models/user');
-
-let server;
+const {Genre} = require('../../../models/genre');
+const {User} = require('../../../models/user');
 
 /**
- * Tests
- * 
- * Always start a test with a clean DB state
- * If you modify the DB, then clean up after
- * Treat it as the only test to be run
+ * Globals
  */
+let server;
+
 describe('/api/genres', () => {
-    // This function will be called before each test
-    beforeEach(() => { server = require('../../index'); });
-    // This function will be called after each test
-    afterEach(async () => {
-        server.close();
-        // That is why you place it here
+    /**
+     * Setup and house cleaning
+     */
+    beforeEach(() => { server = require('../../../index') });
+    afterAll(async () => {
         await Genre.remove({});
+        await server.close();
     });
 
+    /**
+     * TESTS
+     */
     describe('GET /', () => {
         it('should return all genres', async () => {
             await Genre.collection.insertMany([
-                { name: 'genre1' },
-                { name: 'genre2' }
-            ]);
+            { name: 'genre1' },
+            { name: 'genre2' }
+        ]);
 
-            // Every time you run this, it will add two new genres to database
-            const res = await request(server).get('/api/genres');
+        const res = await request(server).get('/api/genres');
 
-            expect(res.status).toBe(200);
-            // Less generic, although you are only testing that there are exactly two items in the array
-            // expect(res.body.length).toBe(2);
-            // More specific
-            expect(res.body.some(g => g.name === 'genre1')).toBeTruthy();
-            expect(res.body.some(g => g.name === 'genre2')).toBeTruthy();
-
-            // Problem is that if test fails, then this statement is not gona be reached
-            // await Genre.remove({});
+        expect(res.status).toBe(200);
+        expect(res.body.some(g => g.name === 'genre1')).toBeTruthy();
+        expect(res.body.some(g => g.name === 'genre2')).toBeTruthy();
         });
     });
 
@@ -64,15 +59,14 @@ describe('/api/genres', () => {
     });
 
     describe('POST /', () => {
-
         /**
-         * Globals
+         * Local Globals
          */
         let token;
         let name;
         
         /**
-         * Body 
+         * Main Body
          */
         const exec = async () => {
             return await request(server)
@@ -82,7 +76,7 @@ describe('/api/genres', () => {
         }
 
         /**
-         * Happy Values
+         * Local Setup
          */
         beforeEach(() => {
             token = new User().generateAuthToken();
@@ -92,12 +86,14 @@ describe('/api/genres', () => {
         /**
          * TESTS
          */
+        // AUTH
         it('should return 401 if client is not logged in', async () => {
             token = '';
             const res = await exec();
             expect(res.status).toBe(401);
         });
-        
+
+        // VALIDATION
         it('should return 400 if genre less than 5 characters', async () => {
             name = '1234';
             const res = await exec();
@@ -109,6 +105,7 @@ describe('/api/genres', () => {
             expect(res.status).toBe(400);
         });
 
+        // RESPONSEE
         it('should save the genre if it is valid', async () => {
             await exec();
             const genre = await Genre.find({ name: 'genre1'});
