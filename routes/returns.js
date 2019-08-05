@@ -5,6 +5,7 @@ const express = require('express');
 const router = express.Router();
 const moment = require('moment');
 const {Rental} = require('../models/rental');
+const {Movie} = require('../models/movie');
 const auth = require('../middleware/auth');
 
 /**
@@ -29,10 +30,14 @@ router.post('/', auth, async (req, res) => {
     rental.dateReturned = new Date();
     const rentalDays = moment().diff(rental.dateOut, 'days');
     rental.rentalFee = rentalDays * rental.movie.dailyRentalRate;
-    
-    await rental.save();
+    rental.save();
 
-    return res.status(200).send();
+    // Update-first approach (not Query first, because we don't need to read the movie)
+    await Movie.update({ _id: rental.movie._id }, {
+        $inc: { numberInStock: 1 }
+    });
+
+    return res.status(200).send(rental);
 });
 
 /**

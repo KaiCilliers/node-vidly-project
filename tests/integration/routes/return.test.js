@@ -3,6 +3,7 @@
  */
 const {Rental} = require('../../../models/rental');
 const {User} = require('../../../models/user');
+const {Movie} = require('../../../models/movie');
 const mongoose = require('mongoose');
 const request = require('supertest');
 const moment = require('moment');
@@ -23,6 +24,8 @@ describe('/api/returns', () => {
     let movieId;
     let rental;
     let token
+    let movie;
+    let dailyRentalRate;
 
     /**
      * Main Body for happy path
@@ -44,6 +47,16 @@ describe('/api/returns', () => {
         customerId = mongoose.Types.ObjectId();
         movieId = mongoose.Types.ObjectId();
         token = new User().generateAuthToken();
+        dailyRentalRate = 2;
+
+        movie = new Movie({
+            _id: movieId,
+            title: '12345',
+            dailyRentalRate: dailyRentalRate,
+            genre: { name: '12345' },
+            numberInStock: 20
+        });
+        await movie.save();
 
         rental = new Rental({
             customer: {
@@ -54,13 +67,14 @@ describe('/api/returns', () => {
             movie: {
                 _id: movieId,
                 title: '12345',
-                dailyRentalRate: 2
+                dailyRentalRate: dailyRentalRate
             }
         });
         await rental.save();
     });
     afterAll(async () => {
         await Rental.remove({});
+        await Movie.remove({});
         await server.close(); // important to await this promise
     });
 
@@ -146,5 +160,37 @@ describe('/api/returns', () => {
 
         const rentalInDb = await Rental.findById(rental._id);
         expect(rentalInDb.rentalFee).toBe(14);
+    });
+    it('should increase the movie stock if input is valid', async () => {
+        const res = await exec();
+
+        const movieInDb = await Movie.findById(movieId);
+        expect(movieInDb.numberInStock).toBe(movie.numberInStock + 1);
+    });
+    it('should return the rental if input is valid', async () => {
+        const res = await exec();
+
+        const rentalInDb = await Rental.findById(rental._id);
+        
+        // This will fail, you will be comparing a Date with the response's string value for Date
+        // expect(res.body).toMatchObject(rentalInDb);
+
+        // Works, but too lengthy
+        // expect(res.body).toHaveProperty('dateOut');
+        // expect(res.body).toHaveProperty('dateReturned');
+        // expect(res.body).toHaveProperty('rentalFee');
+        // expect(res.body).toHaveProperty('customer');
+        // expect(res.body).toHaveProperty('movie');
+
+        // Better solution
+        expect(Object.keys(res.body)).toEqual(
+            expect.arrayContaining([
+                'dateOut',
+                'dateReturned',
+                'rentalFee',
+                'customer',
+                'movie'
+            ])
+        );
     });
 });
