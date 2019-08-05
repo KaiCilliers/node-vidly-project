@@ -19,17 +19,16 @@ router.post('/', [auth, validateBody(validateReturn)], async (req, res) => {
     if (!rental) return res.status(404).send('Rental not found');
     
     if (rental.dateReturned) return res.status(400).send('rental already processed');
-    
-    rental.dateReturned = new Date();
-    const rentalDays = moment().diff(rental.dateOut, 'days');
-    rental.rentalFee = rentalDays * rental.movie.dailyRentalRate;
-    rental.save();
+
+    // This domain logic needs to be in the rental object
+    rental.return();
+    await rental.save();
 
     await Movie.update({ _id: rental.movie._id }, {
         $inc: { numberInStock: 1 }
     });
 
-    return res.status(200).send(rental);
+    return res.send(rental);
 });
 
 function validateReturn(req) {
