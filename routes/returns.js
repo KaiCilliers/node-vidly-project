@@ -7,13 +7,13 @@ const moment = require('moment');
 const {Rental} = require('../models/rental');
 const {Movie} = require('../models/movie');
 const auth = require('../middleware/auth');
-const validate = require('../middleware/validate');
+const validateBody = require('../middleware/validate');
 const Joi = require('@hapi/joi');
 
 /**
  * POST
  */
-router.post('/', [auth, validate(validateReturn)], async (req, res) => {
+router.post('/', [auth, validateBody(validateReturn)], async (req, res) => {
     // Access id in a sub document
     const rental = await Rental.findOne({
         'customer._id': req.body.customerId,

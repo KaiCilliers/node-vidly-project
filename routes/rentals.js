@@ -4,6 +4,7 @@
 const {Rental, joiValidate} = require('../models/rental');
 const {Movie} = require('../models/movie');
 const {Customer} = require('../models/customer');
+const validateBody = require('../middleware/validate');
 const mongoose = require('mongoose');
 const Fawn = require('fawn');
 const express = require('express');
@@ -31,10 +32,7 @@ router.get('/', async (req, res) => {
 /**
  * POST
  */
-router.post('/', async (req, res) => {
-    const { error } = joiValidate(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-
+router.post('/', validateBody(joiValidate), async (req, res) => {
     const customer = await Customer.findById(req.body.customerId);
     if (!customer) return res.status(400).send('Invalid customer.');
 

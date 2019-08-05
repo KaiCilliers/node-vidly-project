@@ -5,6 +5,7 @@ const {Movie, joiValidate} = require('../models/movie');
 const {Genre} = require('../models/genre');
 const express = require('express');
 const router = express.Router();
+const validateBody = require('../middleware/validate');
 
 /**
  * GET
@@ -24,10 +25,7 @@ router.get('/:id', async (req, res) => {
 /**
  * POST
  */
-router.post('/', async (req, res) => {
-  const { error } = joiValidate(req.body); 
-  if (error) return res.status(400).send(error.details[0].message);
-
+router.post('/', validateBody(joiValidate), async (req, res) => {
   const genre = await Genre.findById(req.body.genreId);
   if (!genre) return res.status(400).send('Invalid genre.');
 
@@ -48,10 +46,7 @@ router.post('/', async (req, res) => {
 /**
  * PUT
  */
-router.put('/:id', async (req, res) => {
-  const { error } = joiValidate(req.body); 
-  if (error) return res.status(400).send(error.details[0].message);
-
+router.put('/:id', validateBody(joiValidate), async (req, res) => {
   const genre = await Genre.findById(req.body.genreId);
   if (!genre) return res.status(400).send('Invalid genre.');
 

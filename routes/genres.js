@@ -4,6 +4,7 @@
 const validateObjectId = require('../middleware/validateObjectId');
 const admin = require('../middleware/admin');
 const auth = require('../middleware/auth');
+const validateBody = require('../middleware/validate');
 const express = require('express');
 const router = express.Router();
 const {Genre, joiValidate} = require('../models/genre');
@@ -26,10 +27,7 @@ router.get('/:id', validateObjectId, async (req, res) => {
 /**
  * POST
  */
-router.post('/', auth, async (req, res) => {
-    const { error } = joiValidate(req.body);
-    if(error) return res.status(400).send(error.details[0].message);
-
+router.post('/', [auth, validateBody(joiValidate)], async (req, res) => {
     const genre = new Genre({
         name: req.body.name
     });
@@ -41,10 +39,7 @@ router.post('/', auth, async (req, res) => {
 /**
  * PUT
  */
-router.put('/:id', [auth, validateObjectId], async (req, res) => {
-    const { error } = joiValidate(req.body)
-    if(error) return res.status(400).send(error.details[0].message);
-
+router.put('/:id', [auth, validateObjectId, validateBody(joiValidate)], async (req, res) => {
     const genre = await Genre.findByIdAndUpdate(req.params.id, {
         name: req.body.name
     }, { new: true });

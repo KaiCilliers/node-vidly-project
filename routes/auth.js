@@ -7,6 +7,7 @@ const express = require('express');
 const router = express.Router();
 const Joi = require('@hapi/joi');
 const {User} = require('../models/user');
+const validateBody = require('../middleware/validate');
 
 /**
  * POST
@@ -16,10 +17,7 @@ const {User} = require('../models/user');
  * the authentication token should not be stored in
  * the database.
  */
-router.post('/', async (req, res) => {
-    const { error } = validateLogin(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-
+router.post('/', validateBody(validateLogin), async (req, res) => {
     let user = await User.findOne({ email: req.body.email });
     if (!user) return res.status(400).send('Invalid email or password.');
 

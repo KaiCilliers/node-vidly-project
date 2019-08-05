@@ -4,6 +4,7 @@
 const express = require('express');
 const router = express.Router();
 const {Customer, joiValidate} = require('../models/customer');
+const validateBody = require('../middleware/validate');
 
 /**
  * GET
@@ -21,10 +22,7 @@ router.get('/:id', async (req, res) => {
 /**
  * POST
  */
-router.post('/', async (req, res) => {
-    const { error } = joiValidate(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-
+router.post('/', validateBody(joiValidate), async (req, res) => {
     let customer = new Customer({
         isGold: req.body.isGold,
         name: req.body.name,
@@ -38,10 +36,7 @@ router.post('/', async (req, res) => {
 /**
  * PUT
  */
-router.put('/:id', async (req, res) => {
-    const { error } = joiValidate(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-
+router.put('/:id', validateBody(joiValidate), async (req, res) => {
     const customer = await Customer.findByIdAndUpdate(req.params.id, {
         isGold: req.body.isGold || false,
         name: req.body.name,
