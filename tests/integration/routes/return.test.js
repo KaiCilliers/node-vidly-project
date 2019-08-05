@@ -84,9 +84,9 @@ describe('/api/returns', () => {
     });
 
     // VALIDATION
-    it('should return 404 if no rental found for this customer/movie', async () => {
-        customerId = mongoose.Types.ObjectId();
-        movieId = mongoose.Types.ObjectId();
+    it('should return 404 if no rental found for the customer/movie', async () => {
+        // Delete all values in collection
+        await Rental.remove({});
         const res = await exec();
         expect(res.status).toBe(404);
     });
