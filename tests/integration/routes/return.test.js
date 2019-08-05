@@ -5,6 +5,7 @@ const {Rental} = require('../../../models/rental');
 const {User} = require('../../../models/user');
 const mongoose = require('mongoose');
 const request = require('supertest');
+const moment = require('moment');
 
 /**
  * Globals
@@ -118,5 +119,32 @@ describe('/api/returns', () => {
         const diff = new Date() - rentalInDb.dateReturned;
         // Diff has to be less than 10 seconds
         expect(diff).toBeLessThan(10 * 1000);
+    });
+    it('should set the rentalFee if input is valid', async () => {
+        /**
+         * Problem
+         * 
+         * You create a new rental while testing.
+         * We need a rental dateOut value to be
+         * at least 1 day old.
+         * 
+         * rental.dateOut = // 7 days ago;
+         * await exec();
+         * 
+         * We need to install a new lib called 'moment'
+         * Saved as a normal dependency, because some
+         * functions of moment will be used in production
+         * code as well.
+         * 
+         * moment() returns the current time (like new Date())
+         * but not in same format, hence .toDate()
+         */
+        rental.dateOut = moment().add(-7, 'days').toDate();
+        await rental.save()
+
+        const res = await exec();
+
+        const rentalInDb = await Rental.findById(rental._id);
+        expect(rentalInDb.rentalFee).toBe(14);
     });
 });
