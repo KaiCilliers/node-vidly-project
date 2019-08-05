@@ -43,7 +43,7 @@ router.post('/', auth, async (req, res) => {
  */
 router.put('/:id', [auth, validateObjectId], async (req, res) => {
     const { error } = joiValidate(req.body)
-    if(error) return res.status(400).send(error.details[0].message)
+    if(error) return res.status(400).send(error.details[0].message);
 
     const genre = await Genre.findByIdAndUpdate(req.params.id, {
         name: req.body.name
