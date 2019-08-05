@@ -96,4 +96,25 @@ describe('/api/returns', () => {
         const res = await exec();
         expect(res.status).toBe(400);
     });
+    it('should return 200 if request is valid', async () => {
+        const res = await exec();
+        expect(res.status).toBe(200);
+    });
+
+    // RESPONSE
+    it('should set the returnDate if input is valid', async () => {
+        const res = await exec();
+
+        /**
+         * We are not using rental object,
+         * it is in memory.
+         * 
+         * When call exec() we make changes
+         * to DB, and rental is not aware of
+         * changes.
+         */
+        const rentalInDb = await Rental.findById(rental._id);
+
+        expect(rentalInDb.dateReturned).toBeDefined();
+    });
 });

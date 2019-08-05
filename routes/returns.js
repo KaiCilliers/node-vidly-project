@@ -4,6 +4,7 @@
 const express = require('express');
 const router = express.Router();
 const {Rental} = require('../models/rental');
+const auth = require('../middleware/auth');
 
 /**
  * POST
@@ -11,7 +12,7 @@ const {Rental} = require('../models/rental');
  * Now, what is the simplest code to write
  * to make our test we created pass?
  */
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     if (!req.body.customerId) return res.status(400).send('customerId not provided');
     if (!req.body.movieId) return res.status(400).send('movieId not provided');
     
@@ -24,7 +25,10 @@ router.post('/', async (req, res) => {
     
     if (rental.dateReturned) return res.status(400).send('rental already processed');
     
-    res.status(401).send('Unauthorised');
+    rental.dateReturned = 1;
+    await rental.save();
+
+    return res.status(200).send();
 });
 
 /**
