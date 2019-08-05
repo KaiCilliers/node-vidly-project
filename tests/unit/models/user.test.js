@@ -7,9 +7,12 @@ const config = require('config');
 const mongoose = require('mongoose');
 
 /**
- * Tests
+ * Test Suite
  */
 describe('user.generateAuthToken', () => {
+    /**
+     * TESTS
+     */
     it('should return a valid JWT', () => {
         const payload = {
             _id: new mongoose.Types.ObjectId().toHexString(),

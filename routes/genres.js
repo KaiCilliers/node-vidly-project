@@ -12,7 +12,6 @@ const {Genre, joiValidate} = require('../models/genre');
  * GET
  */
 router.get('/', async (req, res, next) => {
-    // throw new Error('custom error: Can not find Genre.');
     const genres = await Genre.find().sort('name');
     res.send(genres);
 });

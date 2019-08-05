@@ -10,9 +10,6 @@ const auth = require('../middleware/auth');
 
 /**
  * POST
- * 
- * Now, what is the simplest code to write
- * to make our test we created pass?
  */
 router.post('/', auth, async (req, res) => {
     if (!req.body.customerId) return res.status(400).send('customerId not provided');
@@ -32,7 +29,6 @@ router.post('/', auth, async (req, res) => {
     rental.rentalFee = rentalDays * rental.movie.dailyRentalRate;
     rental.save();
 
-    // Update-first approach (not Query first, because we don't need to read the movie)
     await Movie.update({ _id: rental.movie._id }, {
         $inc: { numberInStock: 1 }
     });

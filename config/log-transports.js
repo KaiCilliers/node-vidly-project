@@ -88,4 +88,6 @@ if (process.env.NODE_ENV !== 'production') {
     format: winston.format.simple()
   }));
 }
+
+db: process.env.NODE_ENV === 'test' ? '' : 'mongodb://localhost/vidly',
  */

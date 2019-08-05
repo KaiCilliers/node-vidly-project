@@ -12,13 +12,6 @@ const {User, joiValidate} = require('../models/user');
  * GET
  */
 router.get('/me', auth, async (req, res) => {
-    /**
-     * Client only sends a JWT. The request goes through
-     * the middleware specified ('auth') that sets the 
-     * user object which contains the user's ID.
-     * 
-     * The information is extracted from the JSON Web Token
-     */
     const user = await User.findById(req.user._id).select('-password');
     res.send(user);
 });
@@ -44,7 +37,6 @@ router.post('/', async (req, res) => {
 
     await user.save();
     
-    // Here is where you call the function added to the user schema
     const token = user.generateAuthToken();
     res.header('x-auth-token', token).send(
         _.pick(user, ['_id', 'name', 'email'])

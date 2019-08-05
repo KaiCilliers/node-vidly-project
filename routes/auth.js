@@ -11,7 +11,7 @@ const {User} = require('../models/user');
 /**
  * POST
  * 
- * Logging in user logic
+ * Logging user in logic
  * User has to be logged out on the client, because
  * the authentication token should not be stored in
  * the database.

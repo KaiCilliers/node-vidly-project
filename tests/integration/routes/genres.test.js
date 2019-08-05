@@ -11,20 +11,26 @@ const mongoose = require('mongoose');
  */
 let server;
 
+/**
+ * Test Suite
+ */
 describe('/api/genres', () => {
     /**
-     * Setup and house cleaning
+     * Setup & Cleanup
      */
     beforeEach(() => { server = require('../../../index') });
-    afterAll(async () => {
+    afterEach(async () => {
         await Genre.remove({});
-        await server.close(); // important to await this promise
+        await server.close();
     });
 
     /**
      * TESTS
      */
     describe('GET /', () => {
+        /**
+         * TESTS
+         */
         it('should return all genres', async () => {
             await Genre.collection.insertMany([
             { name: 'genre1' },
@@ -40,19 +46,10 @@ describe('/api/genres', () => {
     });
 
     describe('GET /:id', () => {
-        it('should return a genre if a valid id is passed', async () => {
-            const genre = new Genre({ name: 'genre1' });
-            await genre.save();
-
-            const res = await request(server).get(`/api/genres/${genre._id}`);
-
-            expect(res.status).toBe(200);
-            // This will fail due to comparing an objectID sting and array
-            // expect(res.body).toMatchObject(genre);
-            // This is better way to test it
-            expect(res.body).toHaveProperty('name', genre.name);
-        });
-        // Added this test after checking coverage/Icov-report/index.html
+        /**
+         * TESTS
+         */
+        // VALIDATION
         it('should return 404 if no genre with the given id exists', async () => {
             const id = mongoose.Types.ObjectId();
             const res = await request(server).get(`/api/genres/${id}`);
@@ -64,15 +61,34 @@ describe('/api/genres', () => {
 
             expect(res.status).toBe(404);
         });
+
+        // RESPONSE
+        it('should return a genre if a valid id is passed', async () => {
+            const genre = new Genre({ name: 'genre1' });
+            await genre.save();
+
+            const res = await request(server).get(`/api/genres/${genre._id}`);
+
+            expect(res.status).toBe(200);
+            expect(res.body).toHaveProperty('name', genre.name);
+        });
     });
 
     describe('POST /', () => {
         /**
-         * Local Globals
+         * Locals
          */
         let token;
         let name;
         
+        /**
+         * Setup & Cleanup
+         */
+        beforeEach(() => {
+            token = new User().generateAuthToken();
+            name = 'genre1';
+        });
+
         /**
          * Main Body
          */
@@ -82,14 +98,6 @@ describe('/api/genres', () => {
                 .set('x-auth-token', token)
                 .send({ name });
         }
-
-        /**
-         * Local Setup
-         */
-        beforeEach(() => {
-            token = new User().generateAuthToken();
-            name = 'genre1';
-        });
         
         /**
          * TESTS
@@ -129,12 +137,24 @@ describe('/api/genres', () => {
 
     describe('PUT /:id', () => {
         /**
-         * Local Globals
+         * Locals
          */
         let token;
         let newName;
         let genre;
         let id;
+
+        /**
+         * Setup & Cleanup
+         */
+        beforeEach(async () => {
+            genre = new Genre({ name: 'genre1' });
+            await genre.save();
+
+            token = new User().generateAuthToken();
+            id = genre._id;
+            newName = 'updateName';
+        });
 
         /**
          * Main Body
@@ -145,21 +165,6 @@ describe('/api/genres', () => {
                 .set('x-auth-token', token)
                 .send({ name: newName });
         }
-
-        /**
-         * Before each local test
-         * 
-         * Create a genre and put it in the database
-         * before each test
-         */
-        beforeEach(async () => {
-            genre = new Genre({ name: 'genre1' });
-            await genre.save();
-
-            token = new User().generateAuthToken();
-            id = genre._id;
-            newName = 'updateName';
-        });
 
         /**
          * TESTS
@@ -208,27 +213,14 @@ describe('/api/genres', () => {
 
     describe('DELETE /:id', () => {
         /**
-         * Local Globals
+         * Locals
          */
         let token;
         let genre;
         let id;
 
         /**
-         * Main Body
-         */
-        const exec = async () => {
-            return await request(server)
-                .delete(`/api/genres/${id}`)
-                .set('x-auth-token', token)
-                .send();
-        }
-
-        /**
-         * Before each local test
-         * 
-         * Create a genre and put it in the database
-         * before each test
+         * Setup & Cleanup
          */
         beforeEach(async () => {
             genre = new Genre({ name: 'genre1' });
@@ -237,6 +229,16 @@ describe('/api/genres', () => {
             token = new User({ isAdmin: true }).generateAuthToken();
             id = genre._id;
         });
+
+        /**
+         * Main Body for happy path
+         */
+        const exec = async () => {
+            return await request(server)
+                .delete(`/api/genres/${id}`)
+                .set('x-auth-token', token)
+                .send();
+        }
 
         /**
          * TESTS

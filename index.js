@@ -15,13 +15,6 @@ process.on('unhandledRejection', (ex) => {
 });
 
 /**
- * Testing error catching
- */
-// const p = Promise.reject(new Error('promise part message'));
-// p.then(() => console.log('Doneish'));
-// throw new Error('startup FAIL');
-
-/**
  * Server Connection
  */
 const app = express();
@@ -40,4 +33,7 @@ require('./startup/validation')();
 const PORT = process.env.PORT || 3002;
 const server = app.listen(PORT, () => logger.info(`Listening on port ${PORT}...`));
 
+/**
+ * Exports
+ */
 module.exports = server;

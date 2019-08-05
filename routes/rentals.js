@@ -12,14 +12,11 @@ const router = express.Router();
 /**
  * Initialisations
  * 
- * Fawn runs multiple database
+ * Fawn allows multiple database
  * operations to be executed.
  * If one operation fails, it will
  * rollback all other operations that
  * succeeded.
- * 
- * All database operations that Fawn
- * controls, either succeed or fail.
  */
 Fawn.init(mongoose);
 
@@ -60,7 +57,7 @@ router.post('/', async (req, res) => {
     });
 
     /**
-     * Two operations present in Fawn
+     * FAWN
      * 
      * Save to rental collection and
      * Update movie collection

@@ -41,7 +41,7 @@ function validateCustomer(customer) {
 }
 
 /**
- * Export
+ * Exports
  */
 module.exports.Customer = Customer;
 module.exports.joiValidate = validateCustomer;

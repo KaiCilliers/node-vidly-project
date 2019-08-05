@@ -10,30 +10,29 @@ const {User} = require('../../../models/user');
  */
 let server;
 
+/**
+ * Test Suite
+ */
 describe('auth middleware', () => {
     /**
-     * Setup and house cleaning
-     */
-    beforeEach(() => { server = require('../../../index') });
-    afterAll(async () => {
-        await Genre.remove({});
-        await server.close(); // important to await this promise
-    });
-
-    /**
-     * Local Global Token
+     * Locals
      */
     let token;
 
     /**
-     * Local Setup
+     * Setup & Cleanup
      */
     beforeEach(() => {
+        server = require('../../../index');
         token = new User().generateAuthToken();
+    });
+    afterEach(async () => {
+        await Genre.remove({});
+        await server.close();
     });
     
     /**
-     * Main Body for successful paths
+     * Main Body for happy path
      */
     const exec = async () => {
         return await request(server)
