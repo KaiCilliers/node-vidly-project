@@ -67,3 +67,7 @@ Two types of methods
         - Methods avaialbe on an object/instance of a class
         - Like, new User().generateAuthToken()
         - a result of method is depended on the object
+
+Two deployment options
+    - PaaS (Platform as a service)
+    - Docker
