@@ -66,6 +66,7 @@ describe('/api/returns', () => {
     /**
      * TESTS (wrote test first)
      */
+    // AUTH
     it('should return 401 if client is not logged in', async () => {
         token = '';
         const res = await exec();
@@ -80,5 +81,13 @@ describe('/api/returns', () => {
         movieId = '';
         const res = await exec();
         expect(res.status).toBe(400);
+    });
+
+    // VALIDATION
+    it('should return 404 if no rental found for this customer/movie', async () => {
+        customerId = mongoose.Types.ObjectId();
+        movieId = mongoose.Types.ObjectId();
+        const res = await exec();
+        expect(res.status).toBe(404);
     });
 });
