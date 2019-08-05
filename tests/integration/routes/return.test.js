@@ -114,7 +114,9 @@ describe('/api/returns', () => {
          * changes.
          */
         const rentalInDb = await Rental.findById(rental._id);
-
-        expect(rentalInDb.dateReturned).toBeDefined();
+        // Difference in milliseconds
+        const diff = new Date() - rentalInDb.dateReturned;
+        // Diff has to be less than 10 seconds
+        expect(diff).toBeLessThan(10 * 1000);
     });
 });
