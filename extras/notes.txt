@@ -58,3 +58,12 @@ ENVIRONMENT VARIABLES to setting
         - development
     - vidly_jwtPrivateKey
         - mySecureKey
+
+Two types of methods
+    - Static
+        - Methods available directly on a class
+        - Like, Rental.lookup
+    - Instance
+        - Methods avaialbe on an object/instance of a class
+        - Like, new User().generateAuthToken()
+        - a result of method is depended on the object
