@@ -7,15 +7,8 @@ const moment = require('moment');
 const {Rental} = require('../models/rental');
 const {Movie} = require('../models/movie');
 const auth = require('../middleware/auth');
+const validate = require('../middleware/validate');
 const Joi = require('@hapi/joi');
-
-const validate = (validator) => {
-    return (req, res, next) => {
-        const { error } = validator(req.body);
-        if(error) return res.status(400).send(error.details[0].message);
-        next();
-    }
-}
 
 /**
  * POST
