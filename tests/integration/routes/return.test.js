@@ -3,6 +3,7 @@
  */
 const {Rental} = require('../../../models/rental');
 const mongoose = require('mongoose');
+const request = require('supertest');
 
 /**
  * Globals
@@ -49,10 +50,14 @@ describe('/api/returns', () => {
     });
 
     /**
-     * TESTS
+     * TESTS (wrote test first)
      */
-    it('should work!', async () => {
-        const result = await Rental.findById(rental._id);
-        expect(result).not.toBeNull();
+    it('should return 401 if client is not logged in', async () => {
+        // { customerId, movieId } equals  { customerId: customerId, movieId: movieId }
+        // You can use shorthand due to variable names being the same as field
+        const res = await request(server)
+            .post('/api/returns')
+            .send({ customerId, movieId });
+        expect(res.status).toBe(401);
     });
 });
