@@ -55,7 +55,7 @@ module.exports = {
         colorize: true
     },
     console: {
-        level: 'debug',
+        level: 'info',
         format: combine(
             label({ label: 'App'}),
             timestamp(),
