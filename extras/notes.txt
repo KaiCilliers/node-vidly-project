@@ -81,3 +81,18 @@ Simply made a heroku account
 
 Ran the node -v command
     - added the engines value to specify the version of node in use
+
+Ran heroku create
+    - Note, run command in git bash, windows cant access git...
+    - You can add name, but it has to be unique
+        - heroku create vidly
+    - Creates an application in heroku
+    - Creates a git remote the local git environment
+        - You will have two git repos now
+        - One in Git and one in Heroku
+
+Ran remote -v
+    - Confirm remotes created successfully
+
+Ran git push heroku master
+    - push repo to heroku
