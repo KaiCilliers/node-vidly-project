@@ -1,4 +1,4 @@
 {
     "jwtPrivateKey": "",
-    "db": "mongodb+srv://admin_kai:admin@myremotevidly-fb27t.azure.mongodb.net/test?retryWrites=true&w=majority"
+    "db": ""
 }
