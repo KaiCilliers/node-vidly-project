@@ -105,3 +105,27 @@ Viewed the logs for 503 error
     - heroku logs
     - jwtPrivateKey not defined was the error
     - can view logs on heroku's dashboard as well
+
+SOME LAST NOTES
+    $env:vidly_jwtPrivateKey="mySecureKey"
+    $env:NODE_ENV="development"
+    $env:db="mongodb://localhost/vidly"
+
+    $env:vidly_jwtPrivateKey="1234"
+    $env:NODE_ENV="test"
+    $env:db="mongodb://localhost/vidly_test"
+
+    $env:vidly_jwtPrivateKey="prod"
+    $env:NODE_ENV="production"
+    $env:db="mongodb://localhost/vidly_prod"
+
+    https://myvidlyappv2.herokuapp.com
+    https://git.heroku.com/myvidlyappv2.git
+
+    db admin user
+    admin_kai
+    admin
+
+    mongodb+srv://admin_kai:admin@myremotevidly-fb27t.azure.mongodb.net/test?retryWrites=true&w=majority
+
+Shit is finally working \(0^0)/
