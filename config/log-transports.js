@@ -64,16 +64,16 @@ module.exports = {
         handleExceptions: true,
         json: false,
         colorize: true,
-    },
-    mongodb: {
-        level: 'error',
-        format: combine(
-            label({ label: 'App'}),
-            printFormat
-        ),
-        db: 'mongodb://localhost/vidly',
-        handleExceptions: true,
     }
+    // mongodb: {
+    //     level: 'error',
+    //     format: combine(
+    //         label({ label: 'App'}),
+    //         printFormat
+    //     ),
+    //     db: 'mongodb://localhost/vidly',
+    //     handleExceptions: true,
+    // }
 }
 /**
  * Future use
