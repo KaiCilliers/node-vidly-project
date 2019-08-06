@@ -1,7 +1,7 @@
 /**
  * Dependencies
  */
-require('winston-mongodb');
+// require('winston-mongodb');
 const logger = require('../startup/logging');
 
 /**
