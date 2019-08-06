@@ -10,6 +10,6 @@ const compression = require('compression')
  * Exports
  */
 module.exports = function(app) {
-    app.use(hemlet());
+    app.use(helmet());
     app.use(compression());
 }

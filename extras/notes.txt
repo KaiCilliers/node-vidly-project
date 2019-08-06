@@ -52,12 +52,16 @@ Winston Transports:
         }
 
 ENVIRONMENT VARIABLES to setting
-    - NODE_ENV
+    - $env:NODE_ENV
         - production
         - test
         - development
-    - vidly_jwtPrivateKey
+    - $env:vidly_jwtPrivateKey
         - mySecureKey
+    - $env:HTTP_PROXY="http://proxy.server.com:1234"
+        - for heroku to be able to login
+        - might be a once off thing
+        - might not even need it, yea maybe not
 
 Two types of methods
     - Static
@@ -71,3 +75,9 @@ Two types of methods
 Two deployment options
     - PaaS (Platform as a service)
     - Docker
+
+Simply made a heroku account
+    - ran heroku login to login via terminal
+
+Ran the node -v command
+    - added the engines value to specify the version of node in use
