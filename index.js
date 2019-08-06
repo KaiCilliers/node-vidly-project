@@ -3,7 +3,7 @@
  */
 const logger = require('./startup/logging');
 const express = require('express');
-require('winston-mongodb');
+// require('winston-mongodb');
 
 /**
  * Winston does not handle promise rejections outside Express
