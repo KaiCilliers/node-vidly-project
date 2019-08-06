@@ -96,3 +96,7 @@ Ran remote -v
 
 Ran git push heroku master
     - push repo to heroku
+
+Successfully deployed to
+    - https://mysterious-sands-60730.herokuapp.com/
+    - Using Postman results in a 503 (service unavailable) error
